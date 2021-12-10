@@ -1,0 +1,6 @@
+mutation updateCCMConsent($id: ID!, $signaturePath: String!) {
+  updateCCMConsent(_id: $id, signaturePath: $signaturePath){
+    isSuccess
+    message
+  }
+}

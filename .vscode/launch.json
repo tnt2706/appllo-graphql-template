@@ -1,0 +1,29 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "runtimeExecutable": "nodemon",
+      "restart": true,
+      "console": "integratedTerminal",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "NODE_ENV": "dev",
+        "PORT":"4001",
+        "TOKEN_SECRET":"secret",
+        "REDIS_URL":"localhost",
+        "DB_CONNECTION_STRING":"mongodb://localhost/biocare_cardiac_test",
+        "COMMON_DB_CONNECTION_STRING": "mongodb://localhost/biocare_cardiac_common_test"
+      },
+      "program": "${workspaceFolder}/app/index.js"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+extend type CarePlan @key(fields: "_id"){
+  _id: ID! @external
+}

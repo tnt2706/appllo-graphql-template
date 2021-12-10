@@ -1,0 +1,75 @@
+{
+  "name": "patient-api",
+  "version": "0.1.0",
+  "description": "Patient API",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test nodemon --ignore 'globalConfig.json' --exec 'jest'",
+    "test:m1": "MONGOMS_ARCH=x64 NODE_ENV=test nodemon --ignore 'globalConfig.json' --exec 'jest'",
+    "coverage": "NODE_ENV=test jest --coverage",
+    "coverage:m1": "MONGOMS_ARCH=x64 NODE_ENV=test jest --coverage",
+    "test-local": "NODE_ENV=test REDIS_URL=localhost DB_CONNECTION_STRING='mongodb://localhost/biocare_cardiac_test' SOCKET_IO_SERVER_SERVICE='0.0.0.0:6700' GRPC_MOCK_COMPARE='sparse' nodemon --exec 'mocha --recursive -R min --exit --timeout 5000'",
+    "start-local": "NODE_ENV=test PORT=4002 TOKEN_SECRET=secret REDIS_URL=localhost DB_CONNECTION_STRING='mongodb://localhost/biocare_cardiac_test' nodemon app",
+    "start": "NODE_ENV=dev nodemon app",
+    "start-with-env-file": "export $(grep -v '^#' .env | xargs) && node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/biocare-cardiac/backend/patient-api.git"
+  },
+  "keywords": [],
+  "author": "ITRVN",
+  "contributors": [
+    "Minh Ho",
+    "Quang Dao",
+    "Em Le"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/biocare-cardiac/backend/patient-api/issues"
+  },
+  "homepage": "https://gitlab.com/biocare-cardiac/backend/patient-api#readme",
+  "dependencies": {
+    "@apollo/federation": "^0.20.7",
+    "@grpc/grpc-js": "^1.2.2",
+    "@grpc/proto-loader": "^0.5.5",
+    "apollo-server-constraint-directive": "^1.2.5",
+    "apollo-server-core": "^2.19.1",
+    "apollo-server-express": "^2.19.1",
+    "aws-sdk": "^2.574.0",
+    "bluebird": "^3.7.2",
+    "dataloader": "^2.0.0",
+    "express": "^4.17.1",
+    "flat": "^5.0.2",
+    "fs-extra": "^10.0.0",
+    "generate-password": "^1.6.1",
+    "graphql": "^15.4.0",
+    "graphql-fields": "^2.0.3",
+    "graphql-scalars": "^1.7.0",
+    "handlebars": "^4.7.7",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "mime-types": "^2.1.28",
+    "mongoose": "^5.11.10",
+    "mongoose-auto-increment": "^5.0.1",
+    "ms": "^2.1.3",
+    "nodemailer": "^6.6.5",
+    "redis": "^3.0.2",
+    "uninstall": "^0.0.0",
+    "utf8": "^3.0.0",
+    "whatwg-url": "^8.4.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^2.1.0",
+    "@types/jest": "^27.0.3",
+    "faker": "^5.5.3",
+    "jest": "^27.4.0",
+    "mocha": "^8.2.1",
+    "moment": "^2.29.1",
+    "mongodb-memory-server": "^6.9.6",
+    "randomstring": "^1.2.1",
+    "require-graphql-file": "^1.0.1",
+    "supertest": "^6.1.6"
+  }
+}

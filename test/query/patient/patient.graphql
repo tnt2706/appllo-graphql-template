@@ -1,0 +1,24 @@
+query patient($id: ID, $email: String) {
+  patient(_id: $id, email: $email) {
+    _id
+    lastName
+    firstName
+    email
+    currentCarePlan {
+      _id
+    }
+    sf36Result{
+      _id
+      physicalFunc
+    }
+    facilities{
+      _id
+    }
+    currentFacility{
+      _id
+    }
+    isProfileCompleted
+    photo
+
+  }
+}

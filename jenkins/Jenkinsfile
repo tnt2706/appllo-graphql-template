@@ -1,0 +1,119 @@
+def SLACK_THREAD
+pipeline {
+    agent any
+    parameters {
+        string(name: 'app', defaultValue: 'cardiac-patient-api', description:'')
+    }
+    environment {
+        NAMESPACE = "cardiac-${env.gitlabSourceBranch}"
+        HELM_PATH = "~/helm-charts/${env.gitlabSourceBranch}/${params.app}"
+        PACKAGE = "${params.app}-${env.gitlabSourceBranch}"
+    }
+
+    stages{
+        stage ('Set thread') {
+            steps {
+                script {
+                    SLACK_THREAD = 'CU74MJ43B:1582707695.000900'
+                    if(env.gitlabSourceBranch == "alpha") {
+                        SLACK_THREAD = 'CU74MJ43B:1582707695.000900'
+                    } else if(env.gitlabSourceBranch == "beta") {
+                        SLACK_THREAD = 'CU74MJ43B:1582707843.001300'
+                    } else if(env.gitlabSourceBranch == "staging") {
+                        SLACK_THREAD = 'CU74MJ43B:1582707887.001600'
+                    } else if(env.gitlabSourceBranch == "customer") {
+                        SLACK_THREAD = 'CU74MJ43B:1582707950.001900'
+                    }
+                }
+            }
+        }
+        // stage('Unit Test'){
+        //     steps {
+        //         sh 'npm install'
+        //         sh 'npm test'
+        //     }
+        //     post {
+        //         success {
+        //             echo 'Unit Test passed'
+        //         }
+        //          failure {
+        //             echo 'Unit Test failed'
+        //             slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs at Unit Test  `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+        //         }
+        //     }
+        // }
+        stage('Dockerize'){
+            steps {
+                sh '$(aws ecr get-login --no-include-email --region us-east-1 --registry-ids 351404365032)'
+                script {
+                    if (env.gitlabSourceBranch == 'customer') {
+                        sh 'make prod'
+                    } else {
+                        sh 'make dev'
+                    }
+                }
+            }
+
+            post {
+                success {
+                    echo 'Dockerizing App successfully'
+                }
+
+                failure {
+                    echo 'Dockerizing App failed.'
+                    slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs at Dockerizing App  `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+                }
+            }
+        }
+        stage('Building helm chart') {
+            agent { node { label 'master' } }
+            steps {
+                echo 'Prepare for deployment'
+                sh "mkdir -p ${env.HELM_PATH}"
+                sh "rm -rf ${env.HELM_PATH}/*"                
+                sh "mv ./deploy/* ${env.HELM_PATH}/"
+            }
+
+            post {
+                failure {
+                    slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs at Building helm chart  `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+                }
+            }
+        }
+
+        stage('Deploy') {
+            agent { node { label 'master' } }
+            steps {
+                script {
+                    gitLog = sh (
+                        script: " git log --format=format:%s -1 ${GIT_COMMIT}",
+                        returnStdout: true
+                    ).trim()
+
+                    COMMAND = "upgrade -i ${env.PACKAGE}"
+
+                    sh "helm ${COMMAND} ${env.HELM_PATH} --namespace ${env.NAMESPACE} --kubeconfig /home/ubuntu/.kube/config"
+                }
+            }
+
+            post {
+                success {
+                    slackSend(channel: SLACK_THREAD, message: "*Success*\nA new version of `${params.app}` was deployed\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#00FF00")
+                }
+
+                failure {
+                    slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs while deploying new version of `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+            node('master') {
+                cleanWs()
+            }
+        }
+
+    }
+}

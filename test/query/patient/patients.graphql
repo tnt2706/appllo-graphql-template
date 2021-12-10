@@ -1,0 +1,13 @@
+query patients($filter:PatientFilterInput , $limit: Int ) {
+  patients(filter: $filter, limit: $limit) {
+    _id
+    cognitoId
+    email
+    lastName
+    firstName
+    sf36Result{
+      _id
+      physicalFunc
+    }
+  }
+}

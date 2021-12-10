@@ -1,0 +1,73 @@
+def SLACK_THREAD
+pipeline {
+    agent any
+    parameters {
+        string(name: 'app', defaultValue: 'cardiac-patient-api', description:'')
+        string(name: 'helmRoot', defaultValue: '/var/lib/jenkins/helm-charts/', description:'')
+    }
+    environment {
+        NAMESPACE = "cardiac-${env.gitlabSourceBranch}"
+        HELM_PATH = "${helmRoot}/${env.gitlabSourceBranch}/${params.app}"
+        PACKAGE = "${params.app}"
+    }
+
+    stages{
+        stage ('Set thread') {
+            steps {
+                script {
+                    SLACK_THREAD = 'CU74MJ43B:1582707695.000900'
+                }
+            }
+        }
+        stage('Dockerize'){
+            steps {
+                sh '$(aws ecr get-login --no-include-email --region us-east-1 --registry-ids 351404365032)'
+                script {
+                    sh 'make prod'
+                }
+            }
+
+            post {
+                success {
+                    echo 'Dockerizing App successfully'
+                }
+
+                failure {
+                    echo 'Dockerizing App failed.'
+                    slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs at Dockerizing App  `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+                }
+            }
+        }
+        stage('Building helm chart') {
+            agent { node { label 'master' } }
+            steps {
+                sh "mkdir -p ${env.HELM_PATH}"
+                sh "rm -rf ${env.HELM_PATH}/*"                
+                sh "mv ./deploy/* ${env.HELM_PATH}/"
+                sh "cd ${env.HELM_PATH}"
+                dir("${env.HELM_PATH}"){
+                    sh "helm package ${env.HELM_PATH}"
+                    sh "helm s3 push --force ${PACKAGE}-*.tgz eks-puma-customer"
+                }
+            }
+
+            post {
+                success {
+                    slackSend(channel: SLACK_THREAD, message: "*Success*\nBuilding helm chart for `${params.app}`\nUpdated by: *${gitlabUserName}*", color: "#00FF00")
+                }
+                failure {
+                    slackSend(channel: SLACK_THREAD, message: "*Failure*\nAn error occurs at Building helm chart  `${params.app}`\nUpdated by: *${gitlabUserName}*\n*${gitLog}*", color: "#FF0000")
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+            node('master') {
+                cleanWs()
+            }
+        }
+
+    }
+}

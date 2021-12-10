@@ -1,0 +1,9 @@
+mutation signCCMConsent($input: SignCCMConsentInput!) {
+  signCCMConsent(input: $input){
+    isSuccess
+    message
+    consent{
+      _id
+    }
+  }
+}

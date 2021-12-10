@@ -1,0 +1,96 @@
+replicaCount: 1
+
+image:
+  repository: 351404365032.dkr.ecr.us-east-1.amazonaws.com/cardiac-patient-api
+  tag: '0.4.23'
+  pullPolicy: "Always"
+
+nameOverride: "cardiac-patient-api"
+fullnameOverride: "cardiac-patient-api"
+servicenameOverride: "cardiac-patient-api-service"
+
+serviceType: ClusterIP
+ports:
+  - port: 6776
+    targetPort: 6776
+    protocol: TCP
+    name: http
+
+containerPorts:
+  - containerPort: 6776
+    name: http
+
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - none
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 200Mi
+  limits:
+    cpu: 150m
+    memory: 400Mi
+
+env:
+  - name: DB_CONNECTION_STRING
+    valueFrom:
+      secretKeyRef:
+        name: db-secrets
+        key: mongodb-connection-string
+  - name: COMMON_DB_CONNECTION_STRING
+    valueFrom:
+      secretKeyRef:
+        name: db-secrets
+        key: common-mongodb-connection-string
+  - name: REDIS_URL
+    valueFrom:
+      secretKeyRef:
+        name: db-secrets
+        key: redis-url
+  - name: REDIS_AUTH
+    valueFrom:
+      secretKeyRef:
+        name: db-secrets
+        key: redis-auth
+  - name: AUTHENTICATION_STORE
+    valueFrom:
+      configMapKeyRef:
+        name: redis-configs
+        key: AUTHENTICATION_STORE
+  - name: SOCKET_IO_SERVER_SERVICE
+    value: hl-cardiac-socketio-service:6900
+  - name: AUTH_CACHE_SERVER_SERVICE
+    value: hl-cardiac-auth-cache-service:6900
+
+envFrom:
+  - secretRef:
+      name: aws-secrets
+  - configMapRef:
+      name: common-configs
+  - configMapRef:
+      name: bridge-services-configs
+
+healthcheck:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  httpGet:
+    path: /healthcheck
+    port: 6776
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+

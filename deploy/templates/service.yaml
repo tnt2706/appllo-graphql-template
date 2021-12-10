@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cardiac-patient-api.servicename" . }}
+  labels:
+    app: {{ template "cardiac-patient-api.name" . }}
+    chart: {{ template "cardiac-patient-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.serviceType }}
+  ports: 
+    {{- toYaml .Values.ports | nindent 4}}
+  selector:
+    app: {{ template "cardiac-patient-api.name" . }}
+    release: {{ .Release.Name }}

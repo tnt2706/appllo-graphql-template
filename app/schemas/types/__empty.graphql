@@ -1,0 +1,9 @@
+type Facility {
+  _empty: String
+}
+type CarePlan {
+  _empty: String
+}
+type Prescription {
+  _empty: String
+}
