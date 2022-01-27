@@ -117,3 +117,22 @@
       },
     };
    ```
+  ## Install eslint
+  ```js
+  code 
+  code /home/itrvn/.eslintrc.js 
+  which node
+  npx  install-peerdeps -g eslint-config-airbnb
+  npm i -g babel-eslint
+  which node
+  npm ls -g eslint-config-airbnb
+  ls
+  ls ~
+  ls
+  ls ~
+  ls ~ -la
+  which node
+  ln -s /home/itrvn/.nvm/versions/node/v14.16.1/lib/node_modules/ ~/
+  ls ~ -la
+  history
+  ```
