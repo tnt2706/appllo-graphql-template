@@ -52,7 +52,6 @@
   // plugins: [
   //   'react',
   // ],
-  parser: '/Users/tinhtran/.nvm/versions/node/v16.13.2/lib/node_modules/@babel/eslint-parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -125,7 +124,7 @@
   code /home/itrvn/.eslintrc.js 
   which node
   npx  install-peerdeps -g eslint-config-airbnb
-  npm i -g babel-eslint // npm i -g @babel/eslint-parser
+  npm i -g babel-eslint
   which node
   npm ls -g eslint-config-airbnb
   ls
@@ -138,3 +137,16 @@
   ls ~ -la
   history
   ```
+  
+### Format .proto
+```bash
+brew install clang-format
+```
+- Add setting.json vscode
+
+```js
+"clang-format.style": "{ IndentWidth: 2, BasedOnStyle: google, ColumnLimit: 120 }",
+"[proto3]": {
+"editor.defaultFormatter": "zxh404.vscode-proto3"
+}
+```
