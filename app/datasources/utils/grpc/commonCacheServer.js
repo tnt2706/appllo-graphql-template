@@ -5,7 +5,7 @@ const client = createGrpcClient(commonCacheServer);
 
 async function updateUserCache(userId, username, role) {
   const options = createCallOptions();
-  await new Promise((resolve) => {
+  await new Promise(resolve => {
     const request = { userId, username, role };
     client.updateUserCache(request, options, (error, data) => {
       if (error) {
