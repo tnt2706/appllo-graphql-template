@@ -1,4 +1,5 @@
 ## Install
+
 - install oh-my-zsh
 - install node.js 14 sử dụng nvm (node version manager)
 - install vscode và các plugin:
@@ -12,14 +13,19 @@
 - install mongodb version 4.2
 - install redis
 - rename computer và user
+
 ## Configuration Eslint
+
 - Path nodejs using nvm
+
   ```js
   which node
   # output example:
   # /usr/local/nvm/versions/node/v14.16.0/bin/node
   ```
+
 - Add setting in vscode
+
   ```js
   "editor.codeActionsOnSave": {
    "source.fixAll.eslint": true
@@ -38,72 +44,71 @@
    "MD036": false
    },
   ```
+
   - Create file ~/.eslintrc.js
+
    ```js
-    module.exports = {
-  env: {
-    browser: true,
-    commonjs: true,
-    es6: true,
-    node: true,
-    mocha: true,
-    jest: true,
-  },
-  // plugins: [
-  //   'react',
-  // ],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-      experimentalObjectRestSpread: true,
-    },
-    sourceType: 'module',
-    requireConfigFile: false,
-  },
-  globals: {
-    logger: true,
-    io: true,
-  },
-  extends: ['airbnb', 'plugin:import/warnings'],
-  rules: {
-    'no-eval': 1,
-    'no-const-assign': 'warn',
-    'no-this-before-super': 'warn',
-    'no-undef': 'warn',
-    'no-unreachable': 'warn',
-    'no-unused-vars': 'warn',
-    'constructor-super': 'warn',
-    'valid-typeof': 'warn',
-    'no-underscore-dangle': 'off',
-    'no-nested-ternary': 'off',
-    'no-implicit-globals': 'off',
-    'prefer-destructuring': ['error', {
-      VariableDeclarator: {
-        array: false,
-        object: true,
+  module.exports = {
+      env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+        node: true,
+        mocha: true,
+        jest: true,
       },
-      AssignmentExpression: {
-        array: false,
-        object: false,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+          experimentalObjectRestSpread: true,
+        },
+        sourceType: 'module',
+        ecmaVersion: 2020,
       },
-    }, {
-      enforceForRenamedProperties: false,
-    }],
-    'no-param-reassign': ['error', { props: false }],
-    'no-use-before-define': ['error', { functions: false }],
-    'max-len': ['warn', { code: 120, ignoreStrings: true, ignoreTemplateLiterals: true, ignoreRegExpLiterals: true }],
-    'object-curly-newline': ['error', { ExportDeclaration: { multiline: true, minProperties: 4 } }],
-    'react/prop-types': 'off',
-    'react/destructuring-assignment': 'off',
-    'import/prefer-default-export': 'off',
-    'no-console': ['error', { allow: ['time', 'timeEnd', 'timeLog'] }],
-    'arrow-parens': ['error', 'as-needed'],
-    // 'object-curly-newline': ['error',  {
-    //   // ObjectExpression: { minProperties: 6, consistent: true },
-    //   // ObjectPattern: { minProperties: 4, consistent: true },
-    //   ImportDeclaration: { minProperties: 4, consistent: true, multiline: true },
-    //   ExportDeclaration: { minProperties: 4, consistent: true, multiline: true },
-    //   }],
+      globals: {
+        logger: true,
+        io: true,
+      },
+      extends: ['airbnb', 'plugin:import/warnings'],
+      rules: {
+        'no-eval': 1,
+        'no-const-assign': 'warn',
+        'no-this-before-super': 'warn',
+        'no-undef': 'warn',
+        'no-unreachable': 'warn',
+        'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        'constructor-super': 'warn',
+        'valid-typeof': 'warn',
+        'no-underscore-dangle': 'off',
+        'no-nested-ternary': 'off',
+        'no-implicit-globals': 'off',
+        'prefer-destructuring': ['error', {
+          VariableDeclarator: {
+            array: false,
+            object: true,
+          },
+          AssignmentExpression: {
+            array: false,
+            object: false,
+          },
+        }, {
+          enforceForRenamedProperties: false,
+        }],
+        'no-param-reassign': ['error', { props: false }],
+        'no-use-before-define': ['error', { functions: false }],
+        'max-len': ['warn', { code: 120, ignoreStrings: true, ignoreTemplateLiterals: true, ignoreRegExpLiterals: true }],
+        'object-curly-newline': ['error', { ExportDeclaration: { multiline: true, minProperties: 4 } }],
+        'react/prop-types': 'off',
+        'react/destructuring-assignment': 'off',
+        'import/prefer-default-export': 'off',
+        'no-console': ['error', { allow: ['time', 'timeEnd', 'timeLog'] }],
+        'arrow-parens': ['error', 'as-needed'],
+        // 'object-curly-newline': ['error',  {
+        //   // ObjectExpression: { minProperties: 6, consistent: true },
+        //   // ObjectPattern: { minProperties: 4, consistent: true },
+        //   ImportDeclaration: { minProperties: 4, consistent: true, multiline: true },
+        //   ExportDeclaration: { minProperties: 4, consistent: true, multiline: true },
+        //   }],
       },
       settings: {
         'import/resolver': {
@@ -116,12 +121,12 @@
         },
       },
     };
-
-   ```
+  ```
   ## Install eslint
+
   ```js
-  code 
-  code /home/itrvn/.eslintrc.js 
+  code
+  code /home/itrvn/.eslintrc.js
   which node
   npx  install-peerdeps -g eslint-config-airbnb
   npm i -g babel-eslint
@@ -137,11 +142,13 @@
   ls ~ -la
   history
   ```
-  
+
 ### Format .proto
+
 ```bash
 brew install clang-format
 ```
+
 - Add setting.json vscode
 
 ```js
