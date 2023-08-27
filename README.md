@@ -125,22 +125,10 @@
   ## Install eslint
 
   ```js
-  code
-  code /home/itrvn/.eslintrc.js
-  which node
-  npx  install-peerdeps -g eslint-config-airbnb
+  npx install-peerdeps -g eslint-config-airbnb@18.2.1
+  npm --global install eslint-config-airbnb@18.2.1 eslint@^7.2.0 eslint-plugin-import@^2.22.1 eslint-plugin-jsx-a11y@^6.4.1 eslint-plugin-react@^7.21.5 eslint-plugin-react-hooks@^1.7.0\
+  ln -s .nvm/versions/node/v16.14.0/lib/node_modules .
   npm i -g babel-eslint
-  which node
-  npm ls -g eslint-config-airbnb
-  ls
-  ls ~
-  ls
-  ls ~
-  ls ~ -la
-  which node
-  ln -s **/home/itrvn/.nvm/versions/node/v14.16.1/lib/node_modules/** ~/
-  ls ~ -la
-  history
   ```
 
 ### Format .proto
